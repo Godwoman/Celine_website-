@@ -1,0 +1,58 @@
+---
+// Portfolio landing page — shows both Professional and Independent case studies
+// This follows the same structure as the homepage: BaseHead + Header + Footer
+
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+// getCollection pulls all entries from a Content Collection
+import { getCollection } from 'astro:content';
+
+// Fetch all professional case studies
+const professionalStudies = await getCollection('professional-case-studies');
+
+// Fetch all independent case studies
+const independentStudies = await getCollection('independent-case-studies');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`Portfolio | ${SITE_TITLE}`} description="Case studies and portfolio work" />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>Portfolio</h1>
+
+      <section>
+        <h2>Professional Case Studies</h2>
+        <ul>
+          {professionalStudies.map((study) => (
+            <li>
+              <a href={`/portfolio/professional/${study.id}`}>
+                {study.data.title} — {study.data.company}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2>Independent Case Studies</h2>
+        <ul>
+          {independentStudies.map((study) => (
+            <li>
+              <a href={`/portfolio/independent/${study.id}`}>
+                {study.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
