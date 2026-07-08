@@ -1,0 +1,48 @@
+---
+// This is a DYNAMIC page template.
+// Astro automatically generates one page per entry in the
+// "independent-case-studies" collection, using this single file as the template.
+
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { SITE_TITLE } from '../../../consts';
+import { getCollection, render } from 'astro:content';
+
+// getStaticPaths tells Astro exactly which pages to build —
+// one for every entry in the independent-case-studies collection.
+export async function getStaticPaths() {
+  const independentStudies = await getCollection('independent-case-studies');
+
+  return independentStudies.map((study) => ({
+    params: { slug: study.id }, // becomes the URL, e.g. /portfolio/independent/test
+    props: { study }, // passes the actual case study data into this page
+  }));
+}
+
+// Get the specific case study passed in from getStaticPaths above
+const { study } = Astro.props;
+
+// render() turns the Markdown body content into displayable HTML
+const { Content } = await render(study);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`${study.data.title} | ${SITE_TITLE}`} description={study.data.question} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>{study.data.title}</h1>
+
+      <p><strong>Question:</strong> {study.data.question}</p>
+      <p><strong>Status:</strong> {study.data.status}</p>
+
+      <!-- This renders the actual Markdown body content from the .md file -->
+      <Content />
+    </main>
+    <Footer />
+  </body>
+</html>

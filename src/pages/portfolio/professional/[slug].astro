@@ -1,0 +1,51 @@
+---
+// This is a DYNAMIC page template.
+// Astro automatically generates one page per entry in the
+// "professional-case-studies" collection, using this single file as the template.
+
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { SITE_TITLE } from '../../../consts';
+import { getCollection, render } from 'astro:content';
+
+// getStaticPaths tells Astro exactly which pages to build.
+// It runs once at build time and returns a list of "paths" —
+// one for every case study in the collection.
+export async function getStaticPaths() {
+  const professionalStudies = await getCollection('professional-case-studies');
+
+  return professionalStudies.map((study) => ({
+    params: { slug: study.id }, // this becomes the URL, e.g. /portfolio/professional/test
+    props: { study }, // passes the actual case study data into this page
+  }));
+}
+
+// Get the specific case study passed in from getStaticPaths above
+const { study } = Astro.props;
+
+// render() turns the Markdown body content into displayable HTML
+const { Content } = await render(study);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`${study.data.title} | ${SITE_TITLE}`} description={study.data.outcome} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>{study.data.title}</h1>
+
+      <p><strong>Company:</strong> {study.data.company}</p>
+      <p><strong>Role:</strong> {study.data.role}</p>
+      <p><strong>Timeframe:</strong> {study.data.timeframe}</p>
+      <p><strong>Outcome:</strong> {study.data.outcome}</p>
+
+      <!-- This renders the actual Markdown body content from the .md file -->
+      <Content />
+    </main>
+    <Footer />
+  </body>
+</html>
