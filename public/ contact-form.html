@@ -1,0 +1,30 @@
+<!--
+  This file exists purely so Netlify's build bot can detect the contact form.
+  It's a plain HTML duplicate of the form in src/pages/contact.astro.
+  Visitors will never see or visit this page directly — it's just for
+  Netlify's form-detection system to register the form correctly.
+-->
+
+<!-- name="contact" identifies this form to Netlify -->
+<!-- data-netlify="true" tells Netlify to capture submissions from it -->
+<form name="contact" method="POST" data-netlify="true">
+  <!-- Hidden field required by Netlify to match this form to its name -->
+  <input type="hidden" name="form-name" value="contact" />
+
+  <p>
+    <label for="name">Name</label><br />
+    <input type="text" id="name" name="name" required />
+  </p>
+
+  <p>
+    <label for="email">Email</label><br />
+    <input type="email" id="email" name="email" required />
+  </p>
+
+  <p>
+    <label for="message">Message</label><br />
+    <textarea id="message" name="message" rows="6" required></textarea>
+  </p>
+
+  <button type="submit">Send Message</button>
+</form>

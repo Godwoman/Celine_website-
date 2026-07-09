@@ -1,0 +1,52 @@
+---
+// Contact page — simple form using Netlify Forms.
+// Netlify automatically detects any HTML form with data-netlify="true"
+// and handles submissions for free, no backend code needed.
+
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`Contact | ${SITE_TITLE}`} description="Get in touch" />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>Contact</h1>
+      <p>Have a question or want to work together? Send a message below.</p>
+
+      <!--
+        name="contact" identifies this form to Netlify.
+        data-netlify="true" tells Netlify to capture submissions.
+        method="POST" is required for Netlify Forms to work.
+      -->
+      <form name="contact" method="POST" data-netlify="true">
+        <!-- Hidden input required by Netlify to match the form name -->
+        <input type="hidden" name="form-name" value="contact" />
+
+        <p>
+          <label for="name">Name</label><br />
+          <input type="text" id="name" name="name" required />
+        </p>
+
+        <p>
+          <label for="email">Email</label><br />
+          <input type="email" id="email" name="email" required />
+        </p>
+
+        <p>
+          <label for="message">Message</label><br />
+          <textarea id="message" name="message" rows="6" required></textarea>
+        </p>
+
+        <button type="submit">Send Message</button>
+      </form>
+    </main>
+    <Footer />
+  </body>
+</html>
